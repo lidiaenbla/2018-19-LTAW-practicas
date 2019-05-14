@@ -8,7 +8,29 @@ def pluma_list(request):
 
 def pluma_detail(request, pk):
     pluma = get_object_or_404(Plumas, pk=pk)
+    print("Pluma -->", pluma)
     return render(request, 'tienda/pluma_detail.html', {'pluma': pluma})
+
+def pedido(request):
+    if (request.method == "POST"):
+        form = pedidoForm(request.POST)
+        if (form.is_valid()):
+            pedido = form.save(commit=False)
+            pedido.save()
+    else:
+        form = pedidoForm()
+
+    return render(request, 'tienda/pedido.html', {'form': form})
+
+def pluma_serializer(pluma):
+    return {'marca': pluma.marca, 'precio': pluma.precio}
+
+def cupon_detail(request, pk):
+    pluma = get_object_or_404(Cupon, pk=pk)
+    return render(request, 'tienda/cupon_detail.html', {'cupon': cupon})
+
+def codigo_serializer(codigo):
+    return {'codigo': codigo.codigo, 'descuento': codigo.descuento}
 
 def search(request):
     marca = request.GET.get('marca')
