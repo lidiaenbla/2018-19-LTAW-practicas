@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <style type="text/css">
+    div {
+      border: 1px solid gray;
+      padding: 8px;
+    }
+    h1 {
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 20px;
+      color: #4CAF50;
+      font-family: "Arial";
+    }
+    p {
+      text-indent: 0px;
+      text-align: justify;
+      letter-spacing: 3px;
+      font-family: "Arial";
+    }
+    a {
+      text-decoration: none;
+      color: #b0aef1;
+    }
+    .w3-button:hover{color:#000!important;background-color:#ccc!important}
+    .w3-block{display:block;width:100%}
+    .w3-black,.w3-hover-black:hover{color:#fff!important;background-color:#000!important}
+  </style>
+  </head>
+  <body>
+    <p>Carrito de la compra:</p>
+    <div>
+
+    </div>
+    <br>
+    <br>
+    <p>Por favor, introduce tus datos:</p>
+    <form action="/cart_form" method="post">
+      Nombre:
+      <input type="text" name="Nombre"/> <br />
+      Apellidos:
+      <input type="text" name="Apellidos"/> <br />
+      Correo electrónico:
+      <input type="text" name="Email"/> <br />
+      Método de pago:
+      <input type="text" name="Metodo_pago"/> <br />
+      <br>
+      <input type="submit" value="Enviar"/>
+    </form>
+  </body>
+</html>
