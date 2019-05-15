@@ -1,10 +1,8 @@
 var http = require('http');
 var url = require('url');
 var fs = require('fs');
-var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
 const PORT = 8000
-
 
 console.log("Arrancando servidor en puerto " + PORT + "...\n")
 
@@ -98,7 +96,7 @@ http.createServer((req, res) => {
             req.on('data', chunk => {
               data = "<li><h6>"
               data += chunk.toString();
-              //console.log("DATOS ----->", data);
+              console.log("DATOS ----->", data);
 
               while (data.includes("&") || data.includes("_") || data.includes("=") || data.includes("+") ||
                      data.includes("%40")) {
@@ -131,7 +129,7 @@ http.createServer((req, res) => {
               data = chunk.toString();
               data = data.split("=")[1];
               console.log("DATOS BUSCAR ---->", data);
-              data += search_analyze(data);
+              data += buscarProductos(data);
               console.log("DATAAAA ENCONTRADO------>", data);
               content = crearHtml(data, 3);
               console.log("Datos recibidos: " + data);
@@ -157,6 +155,7 @@ http.createServer((req, res) => {
     res.end();
 
   } else if (filepath == "/myquery") {
+    res.statusCode = 200;
       content = `
       {
         "productos": ["Pluma_tw", "Pluma_fc", "Pluma_tom"]
@@ -189,17 +188,12 @@ http.createServer((req, res) => {
 
     filetype = filepath.split(".")[1]
     filepath = "./" + filepath
-    //console.log("Ruta del fichero: " + filepath)
-    //console.log("Tipo de fichero: " + filetype + "\n")
-
-    // Leer el fichero solicitado
     fs.readFile(filepath, function(err, data) {
       if (err) {
         res.writeHead(404, {'Content-Type': 'text/html'});
         return res.end("404 Not Found");
       } else {
         console.log("GET 200 OK resource: " + filepath);
-        // Generar el mensaje de respuesta
         res.writeHead(200, {'Content-Type': "text/html"});
         res.write(data);
         res.end();
@@ -371,30 +365,27 @@ function crearHtml(datos, opcion){
       return html;
 }
 
-function search_analyze(data)
+function buscarProductos(data)
 {
-  console.log("CLIENTE JS -->", data)
-  m = new XMLHttpRequest();
-  var html = "";
-  m.open("GET","http://localhost:8000/myquery", true);
-  m.onreadystatechange=function(){
-    if (m.readyState==4 && m.status==200){
-      var o = JSON.parse(m.responseText);
-      console.log("OOOOOOOOO---->",o);
+  var html = "<br>Productos: <br><ul>";
+  productos = `
+  {
+    "productos": ["twsbi", "FRANKLIN", "TOMBOW"]
+  }
+  `
+  var encontrado = false;
+  var o = JSON.parse(productos);
       for (i=0; i < o.productos.length; i++) {
-
-        if (data == o.productos[i].toString()) {
-          html += o.productos[i];
-          if (i<o.productos.length-1) {
-            html += ', ';
-          }
+        if (o.productos[i].toString().includes(data)) {
+          html += "<li>" + o.productos[i];
+          encontrado = true;
         }
-        if (i=o.productos.length-1) {
-          console.log("aquii");
-          html += 'No se han encontrado resultados.';
+        if (i = o.productos.length){
+          html += "</ul>"
         }
       }
-    }
-  }
+      if (!encontrado) {
+        html += '</ul>No se han encontrado resultados.';
+      }
   return html;
 }
