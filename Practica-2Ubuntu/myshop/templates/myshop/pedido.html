@@ -1,0 +1,14 @@
+{% extends 'myshop/base.html' %}
+
+    {% block content %}
+        <h1><b>Añadir nuevo producto:</b></h1>
+        <form method="POST" class="pedido-form">{% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="save btn btn-default">Save</button>
+            <ul>
+            	{% for producto in Carro.Lista_pedido %}
+            		<li>{{ producto }}</li>
+              {% endfor %}
+            </ul>
+        </form>
+    {% endblock %}

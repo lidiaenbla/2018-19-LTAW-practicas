@@ -1,0 +1,41 @@
+{% extends 'myshop/base.html' %}
+	{% block content %}
+		<div>
+			<h1><a>BUSCADOR:</a></h1>
+			<form mmethod="GET" action="{% url 'search' %}" id="search" >
+				<input type="text" name="marca">
+				<input type="submit" name="BUSCAR" value="BUSCAR">
+			</form>
+		</div>
+
+		<h1><a>LISTA PRODUCTOS: </a></h1>
+		{% for plum in plumas %}
+			<div class="lista">
+			<h1><a href="{% url 'pluma_detail' pk=plum.pk %}"> {{ plum.marca }}</a></h1>
+			<h3><a>{{ plum.precio }} €</a></h3>
+			</div>
+		{% endfor %}
+
+	<!--	{{ valido }}
+				{% if valido ==  0 %}-->
+						{% for plum in plumas %}
+							<div class="lista">
+							<h3><a href="{% url 'pluma_detail' pk=plum.pk %}"> {{ plum.marca }}</a></h3>
+							<h5><a>{{ plum.precio }} €</a></h5>
+								{{ busqueda }}
+									{% if busqueda ==  1 %}
+										<form mmethod="GET" action="{% url 'searchCodigo' %}" id="searchCodigo">
+											<input type="text" name="codigo">
+											<input type="submit" name="VALIDAR" value="VALIDAR">
+										</form>
+									{% endif %}
+							{% endfor %}
+				<!--{% endif %}-->
+
+				{% for cod in codigos %}
+		      <h5><a href="{% url 'cupon_detail' pk=cod.pk %}">{{ cod.descuento }} €</a></h5>
+		    {% endfor %}
+
+			</div>
+
+	{% endblock %}
